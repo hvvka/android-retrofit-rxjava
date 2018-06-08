@@ -54,19 +54,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void setListView(String username) {
         repositories = new GitHubService().getRepositories(username).toList().toBlocking().single();
-        // todo 404 Not Found
         List<String> names = new ArrayList<>();
         for (Repository repository : repositories) {
             String name = repository.getName();
-            names.add(name);
+            if (name != null) {
+                names.add(name);
+            } else {
+                Toast.makeText(getBaseContext(), "Wrong username!", Toast.LENGTH_LONG).show();
+                break;
+            }
         }
         reposList.setAdapter(new ArrayAdapter<>(MainActivity.this,
                 android.R.layout.simple_list_item_1, names));
         reposList.setOnItemClickListener(
                 (adapterView, view, i, l) -> {
-                    Toast.makeText(getBaseContext(), repositories.get(i).getName(), Toast.LENGTH_SHORT).show();
-                    // todo remove Toast
-
                     Intent intent = new Intent(this, RepositoryDetailsActivity.class)
                             .putExtra(REPO, repositories.get(i));
                     startActivity(intent);

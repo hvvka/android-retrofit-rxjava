@@ -14,14 +14,14 @@
         android:textAlignment="viewStart"
         android:textSize="18sp" />
 
-    <EditText
+    <TextView
         android:id="@+id/nameText"
-        style="@style/Widget.AppCompat.AutoCompleteTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:editable="false"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Widget.ActionMode.Title" />
 
     <TextView
         android:id="@+id/descriptionLabel"
@@ -30,15 +30,17 @@
         android:text="Description"
         android:textSize="18sp" />
 
-    <EditText
+    <TextView
         android:id="@+id/descriptionText"
-        style="@android:style/Widget.DeviceDefault.AutoCompleteTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:autoText="true"
         android:editable="false"
+        android:ellipsize="none"
         android:ems="10"
         android:inputType="textPersonName"
-        android:textSize="14sp" />
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Widget.ActionMode.Title" />
 
     <TextView
         android:id="@+id/ownerLabel"
@@ -47,14 +49,14 @@
         android:text="Owner"
         android:textSize="18sp" />
 
-    <EditText
+    <TextView
         android:id="@+id/ownerText"
-        style="@android:style/Widget.Holo.AutoCompleteTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:editable="true"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Widget.ActionMode.Title" />
 
     <TextView
         android:id="@+id/languageLabel"
@@ -63,12 +65,13 @@
         android:text="Language"
         android:textSize="18sp" />
 
-    <EditText
+    <TextView
         android:id="@+id/languageText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Widget.ActionMode.Title" />
 
     <TextView
         android:id="@+id/starsLabel"
@@ -77,12 +80,13 @@
         android:text="Stars"
         android:textSize="18sp" />
 
-    <EditText
+    <TextView
         android:id="@+id/starsText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Widget.ActionBar.Title" />
 
     <TextView
         android:id="@+id/forksLabel"
@@ -91,12 +95,13 @@
         android:text="Forks"
         android:textSize="18sp" />
 
-    <EditText
+    <TextView
         android:id="@+id/forksText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Widget.ActionMode.Title" />
 
     <TextView
         android:id="@+id/contributionsLabel"
@@ -105,11 +110,12 @@
         android:text="Top contributions"
         android:textSize="18sp" />
 
-    <EditText
+    <TextView
         android:id="@+id/contributionsText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Widget.ActionMode.Title" />
 
 </LinearLayout>

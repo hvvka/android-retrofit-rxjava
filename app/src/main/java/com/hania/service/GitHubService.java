@@ -25,7 +25,7 @@ public class GitHubService {
         gitHubController = retrofit.create(GitHubController.class);
     }
 
-    public Observable<String> getTopContributionsNumber(String userName, String repositoryName) {
+    public String getTopContributionsNumber(String userName, String repositoryName) {
         return gitHubController.listRepos(userName)
                 .flatMapIterable(x -> x)
                 .filter(repo -> repo.getName().equals(repositoryName))
@@ -35,24 +35,34 @@ public class GitHubService {
                 .toSortedList()
                 .flatMapIterable(x -> x)
                 .map(String::valueOf)
-                .last();
+                .last()
+                .onErrorReturn(error -> "Error!")
+                .toBlocking()
+                .first();
     }
 
-    public Observable<String> getTopContributorName(String userName, String repositoryName, Integer contributions) {
+    public String getTopContributorName(String userName, String repositoryName, Integer contributions) {
         return gitHubController.listRepoContributors(userName, repositoryName)
                 .flatMapIterable(x -> x)
                 .filter(u -> u.getContributions().equals(contributions))
                 .map(User::getLogin)
+                .first()
+                .onErrorReturn(error -> "Error!")
+                .toBlocking()
                 .first();
     }
 
-    public Observable<User> getUser(String userName) {
-        return gitHubController.listUser(userName);
+    public User getUser(String userName) {
+        return gitHubController.listUser(userName)
+                .onErrorReturn(error -> new User())
+                .toBlocking()
+                .first();
     }
 
     public Observable<Repository> getRepositories(String userName) {
         return gitHubController.listRepos(userName)
-                .flatMapIterable(x -> x);
+                .flatMapIterable(x -> x)
+                .onErrorReturn(error -> new Repository());
         // todo sort them by date
     }
 }

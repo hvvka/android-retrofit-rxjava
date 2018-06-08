@@ -3,7 +3,7 @@ package com.hania.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hania.R;
@@ -13,19 +13,21 @@ import com.hania.service.GitHubService;
 
 public class RepositoryDetailsActivity extends AppCompatActivity {
 
-    private EditText nameText;  // todo change to textview
+    private String username;
 
-    private EditText descriptionText;
+    private TextView nameText;
 
-    private EditText ownerText;
+    private TextView descriptionText;
 
-    private EditText languageText;
+    private TextView ownerText;
 
-    private EditText starsText;
+    private TextView languageText;
 
-    private EditText forksText;
+    private TextView starsText;
 
-    private EditText contributionsText;
+    private TextView forksText;
+
+    private TextView contributionsText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,31 +48,24 @@ public class RepositoryDetailsActivity extends AppCompatActivity {
         languageText = findViewById(R.id.languageText);
         languageText.setText(repository.getLanguage());
         starsText = findViewById(R.id.starsText);
-        starsText.setText(String.valueOf(repository.getStargazersCount())); //todo int field
+        starsText.setText(String.valueOf(repository.getStargazersCount()));
         forksText = findViewById(R.id.forksText);
         forksText.setText(String.valueOf(repository.getForksCount()));
 
         contributionsText = findViewById(R.id.contributionsText);
-        String username = repository.getOwner().getLogin();
+        username = repository.getOwner().getLogin();
         GitHubService gitHubService = new GitHubService();
-        String topContributions = gitHubService.getTopContributionsNumber(username, repository.getName()).toBlocking().first();
+        String topContributions = gitHubService.getTopContributionsNumber(username, repository.getName());
         String topContributorName = gitHubService.getTopContributorName(
-                username, repository.getName(), Integer.valueOf(topContributions)).toBlocking().first();
+                username, repository.getName(), Integer.valueOf(topContributions));
         contributionsText.setText(String.format("%s: %s", topContributorName, topContributions));
 
         contributionsText.setOnClickListener(view -> {
-            User user = gitHubService.getUser(topContributorName).toBlocking().first();
-            String userSummary = String.format("%s%n%s%n%s%n%s%n", user.getName(), user.getLocation(),
+            User user = gitHubService.getUser(topContributorName);
+            String userSummary = String.format("%s%n%s%n%s%n%s%n",
+                    user.getName(), user.getLocation(),
                     user.getEmail(), user.getCompany());
             Toast.makeText(getBaseContext(), userSummary, Toast.LENGTH_LONG).show();
         });
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        // todo return to the previous state
     }
 }

@@ -1,22 +1,27 @@
 package com.hania.model;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
 
 public class User implements Serializable {
 
-    @SerializedName("login")
-    private String name;
+    private String login;
 
     private Integer contributions;
 
-    public String getName() {
-        return name;
+    private String name;
+
+    private String company;
+
+    private String location;
+
+    private String email;
+
+    public String getLogin() {
+        return login;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public Integer getContributions() {
@@ -27,8 +32,42 @@ public class User implements Serializable {
         this.contributions = contributions;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public String toString() {
-        return "Contributor [name=" + name + ", contributions=" + contributions + "]";
+        return "Contributor [login=" + login + ", contributions=" + contributions
+                + ", name=" + name + ", company=" + company
+                + ", location=" + location + ", email=" + email + "]";
     }
 }

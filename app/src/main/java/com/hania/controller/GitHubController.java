@@ -12,6 +12,15 @@ import rx.Observable;
 public interface GitHubController {
 
     /**
+     * List User account information
+     *
+     * @param user GitHub Account
+     * @return GitHub user
+     */
+    @GET("users/{user}")
+    Observable<User> listUser(@Path("user") String user);
+
+    /**
      * List GitHub repositories of user
      *
      * @param user GitHub Account

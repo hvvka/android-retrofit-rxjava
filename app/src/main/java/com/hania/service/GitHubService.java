@@ -36,7 +36,7 @@ public class GitHubService {
                 .flatMapIterable(x -> x)
                 .map(String::valueOf)
                 .last()
-                .onErrorReturn(error -> "Error!")
+                .onErrorReturn(error -> "")
                 .toBlocking()
                 .first();
     }

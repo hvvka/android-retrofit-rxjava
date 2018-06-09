@@ -56,16 +56,19 @@ public class RepositoryDetailsActivity extends AppCompatActivity {
         username = repository.getOwner().getLogin();
         GitHubService gitHubService = new GitHubService();
         String topContributions = gitHubService.getTopContributionsNumber(username, repository.getName());
-        String topContributorName = gitHubService.getTopContributorName(
-                username, repository.getName(), Integer.valueOf(topContributions));
-        contributionsText.setText(String.format("%s: %s", topContributorName, topContributions));
 
-        contributionsText.setOnClickListener(view -> {
-            User user = gitHubService.getUser(topContributorName);
-            String userSummary = String.format("%s%n%s%n%s%n%s%n",
-                    user.getName(), user.getLocation(),
-                    user.getEmail(), user.getCompany());
-            Toast.makeText(getBaseContext(), userSummary, Toast.LENGTH_LONG).show();
-        });
+        if (!topContributions.equals("")) {
+            String topContributorName = gitHubService.getTopContributorName(
+                    username, repository.getName(), Integer.valueOf(topContributions));
+            contributionsText.setText(String.format("%s: %s", topContributorName, topContributions));
+
+            contributionsText.setOnClickListener(view -> {
+                User user = gitHubService.getUser(topContributorName);
+                String userSummary = String.format("%s%n%s%n%s%n%s%n",
+                        user.getName(), user.getLocation(),
+                        user.getEmail(), user.getCompany());
+                Toast.makeText(getBaseContext(), userSummary, Toast.LENGTH_LONG).show();
+            });
+        }
     }
 }

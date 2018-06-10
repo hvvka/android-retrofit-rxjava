@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.hania.R;
@@ -18,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
     static final String REPO = "Repository";
 
     private ListView reposList;
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private Button submitButton;
 
     private List<Repository> repositories;
+
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,34 +46,72 @@ public class MainActivity extends AppCompatActivity {
         reposList = findViewById(R.id.reposList);
         usernameText = findViewById(R.id.usernameText);
         submitButton = findViewById(R.id.submitButton);
+        progressBar = findViewById(R.id.progressBar);
     }
 
     private void initListeners() {
         submitButton.setOnClickListener(view -> {
-            String username = usernameText.getText().toString();
-            setListView(username);
+            ProgressBarSetter progressBarSetter = new ProgressBarSetter();
+            Thread progressBarThread = new Thread(progressBarSetter);
+            progressBarThread.start();
+
+            ListSetter listSetter = new ListSetter(this);
+            Thread listThread = new Thread(listSetter);
+            listThread.start();
         });
     }
 
-    private void setListView(String username) {
-        repositories = new GitHubService().getRepositories(username).toList().toBlocking().single();
-        List<String> names = new ArrayList<>();
-        for (Repository repository : repositories) {
-            String name = repository.getName();
-            if (name != null) {
-                names.add(name);
-            } else {
-                Toast.makeText(getBaseContext(), "Wrong username!", Toast.LENGTH_LONG).show();
-                break;
-            }
+    private class ListSetter implements Runnable {
+
+        private MainActivity parent;
+
+        ListSetter(MainActivity parent) {
+            this.parent = parent;
         }
-        reposList.setAdapter(new ArrayAdapter<>(MainActivity.this,
-                android.R.layout.simple_list_item_1, names));
-        reposList.setOnItemClickListener(
-                (adapterView, view, i, l) -> {
-                    Intent intent = new Intent(this, RepositoryDetailsActivity.class)
-                            .putExtra(REPO, repositories.get(i));
-                    startActivity(intent);
-                });
+
+        @Override
+        public void run() {
+            String username = usernameText.getText().toString();
+            final List<String> names;
+            names = getData(username);
+            runOnUiThread(new Thread(() -> {
+                setListView(names);
+                progressBar.setVisibility(View.GONE);
+            }));
+        }
+
+        private List<String> getData(String username) {
+            repositories = new GitHubService().getRepositories(username).toList().toBlocking().single();
+            List<String> names = new ArrayList<>();
+            for (Repository repository : repositories) {
+                String name = repository.getName();
+                if (name != null) {
+                    names.add(name);
+                } else {
+                    parent.runOnUiThread(() -> Toast.makeText(parent.getBaseContext(), "Invalid username!", Toast.LENGTH_LONG).show());
+                    break;
+                }
+            }
+            return names;
+        }
+
+        private void setListView(List<String> names) {
+            reposList.setAdapter(new ArrayAdapter<>(MainActivity.this,
+                    android.R.layout.simple_list_item_1, names));
+            reposList.setOnItemClickListener(
+                    (adapterView, view, i, l) -> {
+                        Intent intent = new Intent(getBaseContext(), RepositoryDetailsActivity.class)
+                                .putExtra(REPO, repositories.get(i));
+                        startActivity(intent);
+                    });
+        }
+    }
+
+    private class ProgressBarSetter implements Runnable {
+
+        @Override
+        public void run() {
+            runOnUiThread(new Thread(() -> progressBar.setVisibility(View.VISIBLE)));
+        }
     }
 }

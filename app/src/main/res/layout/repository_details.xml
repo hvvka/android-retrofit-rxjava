@@ -35,12 +35,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:autoText="true"
-        android:editable="false"
+        android:inputType="textMultiLine"
         android:ellipsize="none"
+        android:maxLines="100"
+        android:scrollHorizontally="false"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Widget.ActionMode.Title" />
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Widget.ActionMode.Title"
+        />
 
     <TextView
         android:id="@+id/ownerLabel"

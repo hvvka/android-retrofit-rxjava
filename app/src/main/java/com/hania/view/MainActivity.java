@@ -1,4 +1,4 @@
-package com.hania.activities;
+package com.hania.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
     static final String REPO = "Repository";
 
     private ListView reposList;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initListeners() {
         submitButton.setOnClickListener(view -> {
-            ProgressBarSetter progressBarSetter = new ProgressBarSetter();
+            ProgressBarSetter progressBarSetter = new ProgressBarSetter(this, progressBar);
             Thread progressBarThread = new Thread(progressBarSetter);
             progressBarThread.start();
 
@@ -72,8 +73,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             String username = usernameText.getText().toString();
-            final List<String> names;
-            names = getData(username);
+            List<String> names = getData(username);
             runOnUiThread(new Thread(() -> {
                 setListView(names);
                 progressBar.setVisibility(View.GONE);
@@ -88,7 +88,8 @@ public class MainActivity extends AppCompatActivity {
                 if (name != null) {
                     names.add(name);
                 } else {
-                    parent.runOnUiThread(() -> Toast.makeText(parent.getBaseContext(), "Invalid username!", Toast.LENGTH_LONG).show());
+                    parent.runOnUiThread(() -> Toast.makeText(parent.getBaseContext(),
+                            "Invalid username!", Toast.LENGTH_LONG).show());
                     break;
                 }
             }
@@ -98,20 +99,11 @@ public class MainActivity extends AppCompatActivity {
         private void setListView(List<String> names) {
             reposList.setAdapter(new ArrayAdapter<>(MainActivity.this,
                     android.R.layout.simple_list_item_1, names));
-            reposList.setOnItemClickListener(
-                    (adapterView, view, i, l) -> {
-                        Intent intent = new Intent(getBaseContext(), RepositoryDetailsActivity.class)
-                                .putExtra(REPO, repositories.get(i));
-                        startActivity(intent);
-                    });
-        }
-    }
-
-    private class ProgressBarSetter implements Runnable {
-
-        @Override
-        public void run() {
-            runOnUiThread(new Thread(() -> progressBar.setVisibility(View.VISIBLE)));
+            reposList.setOnItemClickListener((adapterView, view, i, l) -> {
+                Intent intent = new Intent(getBaseContext(), RepositoryDetailsActivity.class)
+                        .putExtra(REPO, repositories.get(i));
+                startActivity(intent);
+            });
         }
     }
 }

@@ -1,22 +1,30 @@
 # android-retrofit-rxjava
 
-Temat: 
-Aplikacja na platformę Android. 
 
-Wymagania: 
-Do realizacji zadania potrzebna będzie wiedza na temat programowania na platformę Android, bibliotek RxJava oraz Retrofit. 
+Application (operating on the Android platform) is able to download JSON-formatted data from the 
+[GitHub API][1] using the [Retrofit library][2] (only `GET` type parameters) and [RxJava][3], 
+process them (using mapping etc.) and display.
 
-Zadanie: 
-Aplikacja, funkcjonująca na platformie Android, powinna móc pobrać dane (sformatowane jako JSON) z API za pomocą biblioteki Retrofit (wykorzystując przykładowo paremetry typu GET) i RxJava, przetworzyć je (np. wykorzystując mapowanie) i wyświetlić. 
 
-Przykładowo, aplikacja może pobrać listę postów danego użytkownika z przykładowego API zamieszczonego w materiałach, wyfiltrować te o zadanej długości a następnie zmapować na wyświetlone później w postaci listy tytuły. 
+## Activities
 
-Termin oddania: 
-27.06.18 
+* Main
 
-Materiały: 
-Getting started with Android development 
-RxJava 
-Retrofit 
-Przykładowe API
+   Fetches repository list for a specified username.
+   
+   ![Enter GitHub username](img/enter_username.jpg)
+   ![Search](img/search.jpg)
+   ![Loaded repository list](img/repository_list.jpg)
 
+* Repository details
+
+   Gets selected repository details. Can fetch some information about top contributor. 
+
+   ![Details loading](img/repository_details_loading.jpg)
+   ![Details loaded](img/repository_details_loaded.jpg)
+   ![Top contributor info](img/top_contributor.jpg)
+
+
+[1]: http://api.github.com/                  "Github API"
+[2]: http://square.github.io/retrofit/       "Retrofit library"
+[3]: https://github.com/ReactiveX/RxJava     "RxJava project"

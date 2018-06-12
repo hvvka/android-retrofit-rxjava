@@ -74,6 +74,4 @@ public class Repository implements Serializable {
                 + ", owner=" + owner.getName() + ", language=" + language
                 + ", stargazers_count=" + stargazersCount + ", forks_count=" + forksCount + "]";
     }
-
-    // todo date field
 }

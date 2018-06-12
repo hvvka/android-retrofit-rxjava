@@ -63,6 +63,5 @@ public class GitHubService {
         return gitHubController.listRepos(userName)
                 .flatMapIterable(x -> x)
                 .onErrorReturn(error -> new Repository());
-        // todo sort them by date
     }
 }
